@@ -1,0 +1,360 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HCM Lite | Company Management</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- LOGIN PAGE -->
+  <section id="loginPage" class="login-page">
+    <div class="login-card">
+      <div class="logo">H<span>CM</span></div>
+      <h1>Welcome Back!</h1>
+      <p class="muted">Sign in to your company workspace</p>
+
+      <form id="loginForm">
+        <label for="username">Username</label>
+        <input id="username" placeholder="Enter username" required>
+
+        <label for="password">Password</label>
+        <input id="password" type="password"
+               placeholder="Enter password" required>
+
+        <label for="role">Login as</label>
+        <select id="role">
+          <option value="Admin">Admin</option>
+          <option value="HR">HR</option>
+          <option value="Employee">Employee</option>
+        </select>
+
+        <button class="primary-btn full" type="submit">
+          Login to Dashboard
+        </button>
+        <p id="loginError" class="error"></p>
+      </form>
+
+      <div class="demo-box">
+        <strong>Demo Accounts</strong>
+        <p>Admin: admin / admin123</p>
+        <p>HR: hr / hr123</p>
+        <p>Employee: employee / emp123</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAIN APPLICATION -->
+  <div id="app" class="app hidden">
+
+    <aside class="sidebar">
+      <div class="brand">H<span>CM</span> Lite</div>
+      <p class="side-label">WORKSPACE</p>
+      <nav id="navigation"></nav>
+
+      <div class="sidebar-bottom">
+        <div class="avatar" id="sideAvatar">A</div>
+        <div class="side-user">
+          <strong id="sideName">Admin</strong>
+          <small id="sideRole">Administrator</small>
+        </div>
+        <button id="logoutBtn" class="logout-btn" title="Logout">↪</button>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div>
+          <h2 id="pageTitle">Dashboard</h2>
+          <p class="muted" id="pageSubtitle">Company overview</p>
+        </div>
+        <div class="top-actions">
+          <span class="status-dot"></span>
+          <span id="headerName">Admin</span>
+          <div class="avatar" id="headerAvatar">A</div>
+        </div>
+      </header>
+
+      <!-- DASHBOARD -->
+      <section id="dashboardSection" class="page-section">
+        <div class="welcome-banner">
+          <div>
+            <span class="eyebrow">HCM LITE WORKSPACE</span>
+            <h1 id="welcomeTitle">Welcome back!</h1>
+            <p>Manage your people, attendance and payroll in one place.</p>
+          </div>
+          <div class="welcome-icon">✦</div>
+        </div>
+
+        <div id="statsGrid" class="stats-grid"></div>
+
+        <div class="content-grid">
+          <div class="panel">
+            <div class="panel-heading">
+              <div>
+                <h3>Recent Activity</h3>
+                <p class="muted">Latest updates in your workspace</p>
+              </div>
+            </div>
+            <div id="activityList"></div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-heading">
+              <div>
+                <h3>Quick Actions</h3>
+                <p class="muted">Frequently used tools</p>
+              </div>
+            </div>
+            <div class="quick-actions" id="quickActions"></div>
+          </div>
+        </div>
+
+        <div class="panel chart-panel">
+          <div class="panel-heading">
+            <div>
+              <h3>Workforce Overview</h3>
+              <p class="muted">Employee distribution by department</p>
+            </div>
+          </div>
+          <div id="departmentChart" class="department-chart"></div>
+        </div>
+      </section>
+
+      <!-- EMPLOYEES -->
+      <section id="employeesSection" class="page-section hidden">
+        <div class="section-toolbar">
+          <div>
+            <h2>Employee Directory</h2>
+            <p class="muted">Manage your company workforce</p>
+          </div>
+          <button id="addEmployeeBtn" class="primary-btn">
+            + Add Employee
+          </button>
+        </div>
+
+        <div class="panel">
+          <input id="employeeSearch" class="search-input"
+                 placeholder="Search name, email or department...">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Employee</th><th>Department</th>
+                  <th>Designation</th><th>Salary</th><th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="employeeTable"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ATTENDANCE -->
+      <section id="attendanceSection" class="page-section hidden">
+        <div class="section-toolbar">
+          <div>
+            <h2>Attendance</h2>
+            <p class="muted">Web-based check-in and check-out</p>
+          </div>
+        </div>
+        <div class="panel attendance-card">
+          <div class="attendance-icon">◷</div>
+          <h2 id="attendanceClock">--:--:--</h2>
+          <p id="attendanceDate" class="muted"></p>
+          <p id="attendanceStatus">You haven't checked in today.</p>
+          <div class="button-row">
+            <button id="checkInBtn" class="primary-btn">Check In</button>
+            <button id="checkOutBtn" class="secondary-btn">Check Out</button>
+          </div>
+        </div>
+        <div class="panel">
+          <h3>Attendance Records</h3>
+          <div class="table-wrap">
+            <table>
+              <thead><tr>
+                <th>Employee</th><th>Date</th>
+                <th>Check In</th><th>Check Out</th><th>Status</th>
+              </tr></thead>
+              <tbody id="attendanceTable"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- LEAVE -->
+      <section id="leaveSection" class="page-section hidden">
+        <div class="section-toolbar">
+          <div>
+            <h2>Leave Management</h2>
+            <p class="muted">Apply for leave and manage requests</p>
+          </div>
+        </div>
+        <div class="content-grid">
+          <div class="panel">
+            <h3>Smart Leave Form</h3>
+            <p class="muted">Choose dates to get a basic leave suggestion.</p>
+            <form id="leaveForm">
+              <label for="leaveType">Leave Type</label>
+              <select id="leaveType">
+                <option>Casual Leave</option>
+                <option>Sick Leave</option>
+                <option>Annual Leave</option>
+              </select>
+              <label for="leaveStart">Start Date</label>
+              <input id="leaveStart" type="date" required>
+              <label for="leaveEnd">End Date</label>
+              <input id="leaveEnd" type="date" required>
+              <label for="leaveReason">Reason</label>
+              <textarea id="leaveReason" placeholder="Enter reason..." required></textarea>
+              <div id="leaveSuggestion" class="suggestion">
+                Your leave suggestion will appear here.
+              </div>
+              <button class="primary-btn full" type="submit">
+                Submit Leave Request
+              </button>
+            </form>
+          </div>
+          <div class="panel">
+            <h3>Leave Requests</h3>
+            <div class="table-wrap">
+              <table>
+                <thead><tr>
+                  <th>Employee</th><th>Dates</th>
+                  <th>Type</th><th>Status / Action</th>
+                </tr></thead>
+                <tbody id="leaveTable"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PAYROLL -->
+      <section id="payrollSection" class="page-section hidden">
+        <div class="section-toolbar">
+          <div>
+            <h2>Payroll Management</h2>
+            <p class="muted">Salary overview and payslip preview</p>
+          </div>
+          <button id="runPayrollBtn" class="primary-btn">Run Monthly Payroll</button>
+        </div>
+        <div id="payrollSummary" class="stats-grid"></div>
+        <div class="panel">
+          <div class="table-wrap">
+            <table>
+              <thead><tr>
+                <th>Employee</th><th>Department</th>
+                <th>Monthly Salary</th><th>Estimated Tax</th><th>Net Salary</th><th>Payslip</th>
+              </tr></thead>
+              <tbody id="payrollTable"></tbody>
+            </table>
+          </div>
+        </div>
+        <div id="payslipPreview" class="panel hidden"></div>
+      </section>
+
+      <!-- ORGANIZATION -->
+      <section id="organizationSection" class="page-section hidden">
+        <div class="section-toolbar">
+          <div>
+            <h2>Organization Setup</h2>
+            <p class="muted">Company departments and configuration</p>
+          </div>
+        </div>
+        <div class="content-grid">
+          <div class="panel">
+            <h3>Add Department</h3>
+            <form id="departmentForm">
+              <label for="departmentName">Department Name</label>
+              <input id="departmentName" placeholder="e.g. Engineering" required>
+              <button class="primary-btn full">Add Department</button>
+            </form>
+            <div id="departmentList" class="tag-list"></div>
+          </div>
+          <div class="panel">
+            <h3>Company Rules</h3>
+            <p>• Standard working hours: 9 AM – 5 PM</p>
+            <p>• Leave requests require approval.</p>
+            <p>• Payroll is calculated monthly.</p>
+            <p>• Changes are recorded in the local audit log.</p>
+            <p class="muted">Demo rules only; no server enforcement.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- AI ASSISTANT -->
+      <section id="assistantSection" class="page-section hidden">
+        <div class="panel assistant-panel">
+          <div class="bot-circle">✦</div>
+          <h2>HCM Smart Assistant</h2>
+          <p class="muted">Ask about your dashboard, leaves or company data.</p>
+          <div id="chatMessages" class="chat-messages">
+            <div class="chat-bubble bot">Hello! I am your demo HR assistant. How can I help?</div>
+          </div>
+          <form id="chatForm" class="chat-form">
+            <input id="chatInput" placeholder="Ask a question..." required>
+            <button class="primary-btn">Send</button>
+          </form>
+          <p class="muted small">This is a rule-based demo, not a live AI model.</p>
+        </div>
+      </section>
+
+      <!-- ANNOUNCEMENTS -->
+      <section id="commsSection" class="page-section hidden">
+        <div class="section-toolbar">
+          <div>
+            <h2>Announcements & Audit Log</h2>
+            <p class="muted">Company updates and recorded demo actions</p>
+          </div>
+        </div>
+        <div class="content-grid">
+          <div class="panel">
+            <h3>Company Announcements</h3>
+            <form id="announcementForm">
+              <label for="announcementText">New Announcement</label>
+              <textarea id="announcementText" required placeholder="Write an announcement..."></textarea>
+              <button class="primary-btn full">Publish Announcement</button>
+            </form>
+            <div id="announcementList"></div>
+          </div>
+          <div class="panel">
+            <h3>Audit Log</h3>
+            <div id="auditList"></div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ADD EMPLOYEE MODAL -->
+  <div id="employeeModal" class="modal hidden">
+    <div class="modal-card">
+      <div class="modal-heading">
+        <h2>Add Employee</h2>
+        <button id="closeModalBtn" class="logout-btn">✕</button>
+      </div>
+      <form id="employeeForm">
+        <label for="empName">Full Name</label>
+        <input id="empName" required>
+        <label for="empEmail">Email</label>
+        <input id="empEmail" type="email" required>
+        <label for="empDepartment">Department</label>
+        <input id="empDepartment" placeholder="Engineering" required>
+        <label for="empDesignation">Designation</label>
+        <input id="empDesignation" placeholder="Frontend Developer" required>
+        <label for="empSalary">Monthly Salary (PKR)</label>
+        <input id="empSalary" type="number" min="0" required>
+        <button class="primary-btn full">Save Employee</button>
+      </form>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
